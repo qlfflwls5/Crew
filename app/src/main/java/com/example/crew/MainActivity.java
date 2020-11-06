@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -57,7 +60,14 @@ public class MainActivity extends AppCompatActivity {
         }
         findViewById(R.id.bt_logout).setOnClickListener(onClickListener);
 
+        // 로그인과 비로그인 구분, 회원정보 등록과 미등록 구분까지의 프로세스
+
+        findViewById(R.id.ibt_search).setOnClickListener(onClickListener);
+        findViewById(R.id.ibt_create).setOnClickListener(onClickListener);
+
+
     }
+
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -66,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.bt_logout:
                     FirebaseAuth.getInstance().signOut();
                     toLogInActivity();
+                    break;
+                case R.id.ibt_search:
+                    myStartActivity(SearchActivity.class);
+                    break;
+                case R.id.ibt_create:
+                    myStartActivity(CreateActivity.class);
                     break;
             }
         }

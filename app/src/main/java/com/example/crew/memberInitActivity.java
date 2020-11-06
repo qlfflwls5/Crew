@@ -108,7 +108,7 @@ public class memberInitActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 startToast("정보 등록을 완료했습니다.");
-                                myStartActicity(MainActivity.class);
+                                myStartActivity(MainActivity.class);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -130,7 +130,7 @@ public class memberInitActivity extends AppCompatActivity {
     private void startToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
-    private void myStartActicity(Class c){
+    private void myStartActivity(Class c){
         Intent intent = new Intent(this, c);
         startActivity(intent);
         finish();
