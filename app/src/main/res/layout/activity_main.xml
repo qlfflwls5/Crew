@@ -29,7 +29,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="25dp"
             android:layout_marginRight="20dp"
-            android:background="@android:color/transparent"
+            android:background="?selectableItemBackgroundBorderless"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_search_light"
             tools:ignore="VectorDrawableCompat" />
@@ -40,15 +40,41 @@
             android:layout_height="35dp"
             android:layout_marginTop="25dp"
             android:layout_marginRight="10dp"
-            android:background="@android:color/transparent"
+            android:background="?selectableItemBackgroundBorderless"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_user"
             tools:ignore="VectorDrawableCompat" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_group"
+            tools:ignore="VectorDrawableCompat" />
+
+        <TextView
+            android:id="@+id/tv_myGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:text="내 그룹"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_main"
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -57,7 +83,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
-        android:background="@android:color/transparent"
+        android:background="?selectableItemBackgroundBorderless"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_plus"
         tools:ignore="VectorDrawableCompat" />

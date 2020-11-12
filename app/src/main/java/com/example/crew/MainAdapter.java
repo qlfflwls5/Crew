@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-public class SearchAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, SearchAdapter.GroupsViewHolder> {
+public class MainAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, MainAdapter.GroupsViewHolder> {
 
-    public SearchAdapter(@NonNull FirestoreRecyclerOptions<SearchGroupsModel> options) {
+    public MainAdapter(@NonNull FirestoreRecyclerOptions<SearchGroupsModel> options) {
         super(options);
     }
 
@@ -26,7 +26,7 @@ public class SearchAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, S
     @NonNull
     @Override
     public GroupsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_group_model, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_group_model, parent, false);
         return new GroupsViewHolder(v);
     }
 

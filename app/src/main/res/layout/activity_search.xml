@@ -19,16 +19,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/et_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_search_light"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:drawableStart="@drawable/ic_search_light"
             android:ems="10"
             android:hint="Name"
             android:inputType="textPersonName" />

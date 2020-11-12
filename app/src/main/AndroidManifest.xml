@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".CreateActivity"></activity>
+        <activity android:name=".GroupActivity"></activity>
+        <activity android:name=".CreateActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".IntroActivity">

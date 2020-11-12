@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,7 +32,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private RecyclerView rv_search;
     private EditText et_search;
-    private ImageButton ibt_search;
 
     private SearchAdapter adapter;
 
@@ -41,15 +41,14 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
 
-
         rv_search = findViewById(R.id.rv_search);
         rv_search.setHasFixedSize(true);
         rv_search.setLayoutManager(new LinearLayoutManager(this));
 
         //쿼리
         Query query = searchgroupsrRef.orderBy("name").startAt("").endAt("" + "\uf8ff");
-        //리사이클러 옵션
 
+        //리사이클러 옵션
         FirestoreRecyclerOptions<SearchGroupsModel> options = new FirestoreRecyclerOptions.Builder<SearchGroupsModel>()
                 .setQuery(query, SearchGroupsModel.class)
                 .build();
@@ -84,6 +83,18 @@ public class SearchActivity extends AppCompatActivity {
                 adapter.updateOptions(options);
             }
         });
+
+        //리사이클러뷰 클릭 이벤트를 어댑터내 메서드와 연동
+        adapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                myStartActivity(GroupActivity.class);
+            }
+        }) ;
+    }
+
+    private void startToast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -96,5 +107,21 @@ public class SearchActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        finish();
+    }
+
+    private void myStartActivity(Class c){
+        Intent intent=new Intent(this, c);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        //finish();
     }
 }
