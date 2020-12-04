@@ -1,30 +1,24 @@
-package com.example.crew;
+package com.example.crew.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.SearchView;
-import android.widget.TextView;
 
+import com.example.crew.R;
+import com.example.crew.adapter.SearchGroupsModel;
+import com.example.crew.adapter.MainAdapter;
+import com.example.crew.preLogin.logInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -38,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private CollectionReference myGroupsrRef = db.collection("users");
 
     private RecyclerView rv_main;
+    private boolean switchOn = false;
 
     private MainAdapter adapter;
 
@@ -48,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+        if(user == null){
             myStartActivity(logInActivity.class);
             finish();
         }else{
@@ -73,36 +68,49 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        findViewById(R.id.bt_logout).setOnClickListener(onClickListener);
-
-        // 로그인과 비로그인 구분, 회원정보 등록과 미등록 구분까지의 프로세스
-
-        findViewById(R.id.ibt_search).setOnClickListener(onClickListener);
-        findViewById(R.id.ibt_create).setOnClickListener(onClickListener);
-
-        rv_main = findViewById(R.id.rv_main);
-        rv_main.setHasFixedSize(true);
-        rv_main.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-        //쿼리
-        Query query = myGroupsrRef.document(user.getUid()).collection("myGroups");
-
-        //리사이클러 옵션
-        FirestoreRecyclerOptions<SearchGroupsModel> options = new FirestoreRecyclerOptions.Builder<SearchGroupsModel>()
-                .setQuery(query, SearchGroupsModel.class)
-                .build();
-
-        adapter = new MainAdapter(options);
-
-        rv_main.setAdapter(adapter);
-
-        //리사이클러뷰 클릭 이벤트를 어댑터내 메서드와 연동
-        adapter.setOnItemClickListener(new MainAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                myStartActivity(GroupActivity.class);
+        if(user == null){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }) ;
+        }else{
+            findViewById(R.id.bt_logout).setOnClickListener(onClickListener);
+
+            // 로그인과 비로그인 구분, 회원정보 등록과 미등록 구분까지의 프로세스
+
+            findViewById(R.id.ibt_search).setOnClickListener(onClickListener);
+            findViewById(R.id.ibt_create).setOnClickListener(onClickListener);
+
+            rv_main = findViewById(R.id.rv_main);
+            rv_main.setHasFixedSize(true);
+            rv_main.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+            //쿼리
+            Query query = myGroupsrRef.document(user.getUid()).collection("myGroups");
+
+            //리사이클러 옵션
+            FirestoreRecyclerOptions<SearchGroupsModel> options = new FirestoreRecyclerOptions.Builder<SearchGroupsModel>()
+                    .setQuery(query, SearchGroupsModel.class)
+                    .build();
+
+            adapter = new MainAdapter(options);
+
+            rv_main.setAdapter(adapter);
+
+            //리사이클러뷰 클릭 이벤트를 어댑터내 메서드와 연동
+            adapter.setOnItemClickListener(new MainAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position, String name) {
+                    Intent intent = new Intent(getApplicationContext(), GroupActivity.class);
+
+                    intent.putExtra("group_name", name);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            }) ;
+        }
+
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {

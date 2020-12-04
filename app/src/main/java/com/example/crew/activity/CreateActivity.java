@@ -1,4 +1,4 @@
-package com.example.crew;
+package com.example.crew.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,18 +10,23 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.crew.customClass.GroupInfo;
+import com.example.crew.R;
+import com.example.crew.customClass.GroupMembersInfo;
+import com.example.crew.customClass.Notice;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class CreateActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -98,12 +103,22 @@ public class CreateActivity extends AppCompatActivity {
                                                         DocumentSnapshot document = task.getResult();
                                                         if (document.exists()) {
                                                             String creatorName = (String) document.get("name");
-                                                            GroupMembersInfo groupMembersInfo = new GroupMembersInfo(creatorName, "Master");
+                                                            GroupMembersInfo groupMembersInfo = new GroupMembersInfo(creatorName, "마스터", 1);
                                                             db.collection("groups")
                                                                     .document(name)
                                                                     .collection("members")
                                                                     .document(user.getUid())
                                                                     .set(groupMembersInfo);
+                                                            long now = System.currentTimeMillis();
+                                                            Date mdate = new Date(now);
+                                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+                                                            String getTime = simpleDateFormat.format(mdate);
+                                                            Notice notice = new Notice("환영합니다", "이 곳을 통해 Bubble을 관리하고 일정을 정리해 보세요.", getTime, 0);
+                                                            db.collection("groups")
+                                                                    .document(name)
+                                                                    .collection("notice")
+                                                                    .document(getTime)
+                                                                    .set(notice);
                                                             db.collection("users")
                                                                     .document(user.getUid())
                                                                     .collection("myGroups")

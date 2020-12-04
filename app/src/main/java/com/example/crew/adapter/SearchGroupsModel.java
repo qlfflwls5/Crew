@@ -1,4 +1,4 @@
-package com.example.crew;
+package com.example.crew.adapter;
 
 //그룹 검색기능에 활용될 리사이클러뷰 정보
 public class SearchGroupsModel {

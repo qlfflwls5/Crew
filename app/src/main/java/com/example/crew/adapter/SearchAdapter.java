@@ -1,4 +1,4 @@
-package com.example.crew;
+package com.example.crew.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,17 +8,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.crew.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-public class MainAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, MainAdapter.GroupsViewHolder> {
+public class SearchAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, SearchAdapter.GroupsViewHolder> {
 
-    public MainAdapter(@NonNull FirestoreRecyclerOptions<SearchGroupsModel> options) {
+    public SearchAdapter(@NonNull FirestoreRecyclerOptions<SearchGroupsModel> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull GroupsViewHolder holder, int position, @NonNull SearchGroupsModel model) {
+    protected void onBindViewHolder(@NonNull final GroupsViewHolder holder, int position, @NonNull final SearchGroupsModel model) {
         holder.group_name.setText(model.getName());
         holder.group_info.setText(model.getInfo());
     }
@@ -26,14 +27,14 @@ public class MainAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, Mai
     @NonNull
     @Override
     public GroupsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_group_model, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_group_model, parent, false);
         return new GroupsViewHolder(v);
     }
 
 
     //이하 리사이클러뷰 클릭을 위한 코드
     public interface OnItemClickListener {
-        void onItemClick(View v, int position) ;
+        void onItemClick(View v, int position, String name) ;
     }
 
     // 리스너 객체 참조를 저장하는 변수
@@ -43,7 +44,6 @@ public class MainAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, Mai
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mListener = listener ;
     }
-
 
     //검색 그룹 뷰홀더
     class GroupsViewHolder extends RecyclerView.ViewHolder {
@@ -65,7 +65,7 @@ public class MainAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, Mai
                     if (pos != RecyclerView.NO_POSITION) {
                         // 리스너 객체의 메서드 호출.
                         if (mListener != null) {
-                            mListener.onItemClick(v, pos) ;
+                            mListener.onItemClick(v, pos, group_name.getText().toString()) ;
                         }
                     }
                 }

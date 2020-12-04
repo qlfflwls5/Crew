@@ -1,4 +1,4 @@
-package com.example.crew;
+package com.example.crew.customClass;
 
 public class GroupInfo {
     private String name;

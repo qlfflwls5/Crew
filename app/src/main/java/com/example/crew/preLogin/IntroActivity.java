@@ -1,10 +1,13 @@
-package com.example.crew;
+package com.example.crew.preLogin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.crew.activity.MainActivity;
+import com.example.crew.R;
 
 public class IntroActivity extends AppCompatActivity {
 

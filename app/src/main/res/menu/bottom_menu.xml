@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_notice"
+        android:enabled="true"
+        android:icon="@drawable/ic_comment_black_24dp"
+        android:title="공지"/>
+    <item
+        android:id="@+id/action_calender"
+        android:enabled="true"
+        android:icon="@drawable/ic_event_available_black_24dp"
+        android:title="캘린더"/>
+    <item
+        android:id="@+id/action_group"
+        android:enabled="true"
+        android:icon="@drawable/ic_group_black_24dp"
+        android:title="회원"/>
+    <item
+        android:id="@+id/action_chat"
+        android:enabled="true"
+        android:icon="@drawable/ic_forum_black_24dp"
+        android:title="채팅"/>
+    <item
+        android:id="@+id/action_achieve"
+        android:enabled="true"
+        android:icon="@drawable/ic_folder_special_black_24dp"
+        android:title="기록"/>
+
+</menu>

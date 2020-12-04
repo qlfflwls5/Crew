@@ -55,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="비밀번호 재설정" />
+
         </LinearLayout>
 
         <Button
@@ -62,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="200dp"
             android:layout_marginRight="20dp"
             android:text="로그인" />
 
