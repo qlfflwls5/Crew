@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#00203F"
     tools:context=".preLogin.IntroActivity">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="149dp"
-        android:layout_marginTop="295dp"
-        android:layout_marginEnd="134dp"
-        android:layout_marginBottom="308dp"
+        android:layout_width="183dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="135dp"
+        android:layout_marginTop="342dp"
+        android:layout_marginEnd="135dp"
+        android:layout_marginBottom="341dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/intro_logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

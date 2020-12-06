@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,12 +44,23 @@ public class fragMembers extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag_members, container, false);
 
+        TextView tv_memberFrag = view.findViewById(R.id.tv_memberFrag);
+        tv_memberFrag.setText(group_name);
+
         rv_members = view.findViewById(R.id.rv_members);
         rv_members.setHasFixedSize(true);
         rv_members.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new MembersAdapter(memberList, getContext());
         rv_members.setAdapter(adapter);
+
+        ImageButton ib_goMain_member = view.findViewById(R.id.ib_goMain_member);
+        ib_goMain_member.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
 
         return view;
     }
@@ -63,32 +76,21 @@ public class fragMembers extends Fragment {
 
         memberList = new ArrayList<>();
 
-        String[] arr = new String[3];
-        arr[0] = "마스터";
-        arr[1] = "매니저";
-        arr[2] = "멤버";
-        for(String str : arr){
-            collectionReference.whereEqualTo("position", str).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()){
-                        for (QueryDocumentSnapshot document : task.getResult()){
-                            GroupMembersInfo groupMembersInfo = new GroupMembersInfo(document.getString("name"),document.getString("position"), document.getLong("positionIndex").intValue());
-                            memberList.add(groupMembersInfo);
-                        }
-                        adapter.notifyDataSetChanged();
+
+
+        collectionReference.orderBy("positionIndex").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        GroupMembersInfo groupMembersInfo = new GroupMembersInfo(document.getString("name"),
+                                document.getString("position"), document.getLong("positionIndex").intValue());
+                        memberList.add(groupMembersInfo);
+
                     }
+                    adapter.notifyDataSetChanged();
                 }
-            });
-        }
-        Collections.sort(memberList, new PositionComparator());
-    }
-}
-class PositionComparator  implements Comparator<GroupMembersInfo> {
-    @Override
-    public int compare(GroupMembersInfo o1, GroupMembersInfo o2) {
-        if(o1.getPositionIndex()>o2.getPositionIndex()) return  1;
-        if(o1.getPositionIndex()<o2.getPositionIndex()) return  -1;
-        return 0;
+            }
+        });
     }
 }

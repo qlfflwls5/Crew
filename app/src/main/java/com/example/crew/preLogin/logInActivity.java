@@ -76,12 +76,12 @@ public class logInActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 startToast("로그인에 성공하였습니다.");
-                                myStartActivity(MainActivity.class);
+                                startMainActivity(MainActivity.class);
                                 finish();
                                 updateUI(user);
                             } else {
                                 // If sign in fails, display a message to the user.
-                                startToast("아이디 및 비밀번호가 일치하지 않습니다.");
+                                startToast("아이디 또는 비밀번호를 확인해주세요.");
                                 updateUI(null);
                                 // ...
                             }
@@ -102,5 +102,11 @@ public class logInActivity extends AppCompatActivity {
         Intent intent=new Intent(this, c);
         startActivity(intent);
     }
+    private void startMainActivity(Class c){
+        Intent intent=new Intent(this, c);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 }
 

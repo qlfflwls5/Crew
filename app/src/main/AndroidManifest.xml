@@ -11,10 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity.MyPageActivity"></activity>
+        <activity android:name=".activity.NoticeActivity"></activity>
+        <activity android:name=".activity.MyPageActivity" />
         <activity android:name=".activity.GroupJoinActivity" />
         <activity android:name=".activity.GroupActivity" />
-        <activity android:name=".activity.CreateActivity"/>
+        <activity android:name=".activity.CreateActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".preLogin.IntroActivity">

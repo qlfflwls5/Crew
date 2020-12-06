@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FDFDFD"
+    tools:context=".activity.NoticeActivity">
+
+    <ImageButton
+        android:id="@+id/ib_goNotice"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/tv_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="공지사항 등록"
+        android:textColor="#00203F"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/ib_goNotice"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/ed_subject"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="50dp"
+        android:padding="15dp"
+        android:background="@drawable/border"
+        android:hint="제목을 입력하세요."
+        app:layout_constraintTop_toBottomOf="@id/tv_notice"
+        />
+    <EditText
+        android:id="@+id/ed_content"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="50dp"
+        android:padding="15dp"
+        android:background="@drawable/border"
+        android:gravity="left"
+        android:hint="내용을 입력하세요."
+
+        app:layout_constraintTop_toBottomOf="@id/ed_subject"
+        app:layout_constraintBottom_toTopOf="@id/bt_noticeSet"
+        />
+
+    <Button
+        android:id="@+id/bt_noticeSet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00203F"
+        android:text="등      록"
+        android:textSize="18dp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

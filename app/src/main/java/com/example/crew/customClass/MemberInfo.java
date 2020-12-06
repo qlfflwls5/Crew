@@ -5,12 +5,14 @@ public class MemberInfo {
     private String sex;
     private String phoneNumber;
     private String birthDay;
+    public  String profileImageUrl;
 
-    public MemberInfo(String name, String sex, String phoneNumber, String birthDay){
+    public MemberInfo(String name, String sex, String phoneNumber, String birthDay, String profileImageUrl){
         this.name = name;
         this.sex = sex;
         this.phoneNumber = phoneNumber;
         this.birthDay = birthDay;
+        this.profileImageUrl = profileImageUrl;
     }
 
     public String getName(){
@@ -40,4 +42,7 @@ public class MemberInfo {
     public void setSex(String sex) {
         this.sex = sex;
     }
+
+    public String getProfileImageUrl() { return profileImageUrl;  }
+    public void setProfileImageUrl(String profileImageUrl) {  this.profileImageUrl = profileImageUrl;  }
 }

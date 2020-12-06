@@ -3,27 +3,40 @@ package com.example.crew.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.crew.R;
 import com.example.crew.customClass.MemberInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
 
 public class memberInitActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static final String TAG = "memberInitActivity";
+    private ImageView iv_initProfile;
+    private Uri imageUri;
+    private int PICK_FROM_ALBUM = 10;
+    private MemberInfo memberInfo;
+    private String sex = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +46,15 @@ public class memberInitActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
+        iv_initProfile = findViewById(R.id.iv_initProfile);
+        iv_initProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent, PICK_FROM_ALBUM);
+            }
+        });
 
         findViewById(R.id.bt_enroll).setOnClickListener(onClickListener);
     }
@@ -78,10 +100,9 @@ public class memberInitActivity extends AppCompatActivity {
     };
 
     private void porfileUpdate() {
-        String name = ((EditText) findViewById(R.id.ed_name)).getText().toString();
-        String birthDay = ((EditText) findViewById(R.id.ed_birth)).getText().toString();
-        String phoneNumber = ((EditText) findViewById(R.id.ed_phoneNumber)).getText().toString();
-        String sex = null;
+        final String name = ((EditText) findViewById(R.id.ed_name)).getText().toString();
+        final String birthDay = ((EditText) findViewById(R.id.ed_birth)).getText().toString();
+        final String phoneNumber = ((EditText) findViewById(R.id.ed_phoneNumber)).getText().toString();
         int rb = ((RadioGroup) findViewById(R.id.rg_sex)).getCheckedRadioButtonId();
         switch(rb){
             case R.id.rb_male:
@@ -97,7 +118,22 @@ public class memberInitActivity extends AppCompatActivity {
             // Access a Cloud Firestore instance from your Activity
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            MemberInfo memberInfo = new MemberInfo(name, sex, phoneNumber, birthDay);
+            if(imageUri != null) {
+                FirebaseStorage.getInstance().getReference().child("userProfiles").child(user.getUid()).putFile(imageUri)
+                        .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                Task<Uri> imageUrl = task.getResult().getStorage().getDownloadUrl();
+                                memberInfo = new MemberInfo(name, sex, phoneNumber, birthDay, imageUrl.getResult().toString());
+                            }
+                        });
+            }else{
+                memberInfo = new MemberInfo(name, sex, phoneNumber, birthDay, Uri.parse("android.resource://"+getPackageName()+
+                        "/drawable/ic_account_box_black_24dp").toString());
+            }
+
+
+
             if(user != null) {
                 db.collection("users").document(user.getUid()).set(memberInfo)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -130,6 +166,14 @@ public class memberInitActivity extends AppCompatActivity {
         Intent intent = new Intent(this, c);
         startActivity(intent);
         finish();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_FROM_ALBUM && requestCode == RESULT_OK) {
+            iv_initProfile.setImageURI(data.getData()); // 가운데 뷰를 바꿈
+            imageUri = data.getData(); // 이미지 경로 원본
+        }
     }
 }
 

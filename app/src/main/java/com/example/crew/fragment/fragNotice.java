@@ -1,9 +1,14 @@
 package com.example.crew.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.crew.R;
+import com.example.crew.activity.NoticeActivity;
 import com.example.crew.adapter.MembersAdapter;
 import com.example.crew.adapter.NoticeAdapter;
 import com.example.crew.customClass.GroupMembersInfo;
@@ -23,11 +29,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class fragNotice extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<Notice> noticelist;
+
+    public static final String TAG = fragNotice.class.getSimpleName();
 
     private RecyclerView rv_notice;
     private String group_name;
@@ -36,10 +46,14 @@ public class fragNotice extends Fragment {
     private View view;
     //ctrl + O 누른 후, onCreateView 검색. View는 onCreateView로
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag_notice, container, false);
+
+        TextView tv_groupname = view.findViewById(R.id.tv_groupname);
+        tv_groupname.setText(group_name);
 
         rv_notice = view.findViewById(R.id.rv_notice);
         rv_notice.setHasFixedSize(true);
@@ -47,6 +61,20 @@ public class fragNotice extends Fragment {
 
         adapter = new NoticeAdapter(noticelist, getContext());
         rv_notice.setAdapter(adapter);
+
+        view.findViewById(R.id.ib_goMain).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+        view.findViewById(R.id.ib_edit).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), NoticeActivity.class);
+                intent.putExtra("group_name", group_name);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

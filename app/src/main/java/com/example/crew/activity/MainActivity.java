@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.crew.R;
 import com.example.crew.adapter.SearchGroupsModel;
@@ -75,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }else{
-            findViewById(R.id.bt_logout).setOnClickListener(onClickListener);
 
             // 로그인과 비로그인 구분, 회원정보 등록과 미등록 구분까지의 프로세스
 
             findViewById(R.id.ibt_search).setOnClickListener(onClickListener);
-            findViewById(R.id.ibt_create).setOnClickListener(onClickListener);
+            findViewById(R.id.bt_create).setOnClickListener(onClickListener);
+            findViewById(R.id.ibt_user).setOnClickListener(onClickListener);
 
             rv_main = findViewById(R.id.rv_main);
             rv_main.setHasFixedSize(true);
@@ -117,15 +118,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.bt_logout:
-                    FirebaseAuth.getInstance().signOut();
-                    toLogInActivity();
-                    break;
                 case R.id.ibt_search:
                     myStartActivity(SearchActivity.class);
                     break;
-                case R.id.ibt_create:
+                case R.id.bt_create:
                     myStartActivity(CreateActivity.class);
+                    break;
+                case R.id.ibt_user:
+                    myStartActivity(MyPageActivity.class);
                     break;
             }
         }
@@ -135,12 +135,6 @@ public class MainActivity extends AppCompatActivity {
     private void myStartActivity(Class c){
         Intent intent=new Intent(this, c);
         startActivity(intent);
-    }
-    private void toLogInActivity(){
-        Intent intent=new Intent(this, logInActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
     }
 
     @Override
