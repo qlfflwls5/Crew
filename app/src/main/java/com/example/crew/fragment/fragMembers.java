@@ -77,14 +77,14 @@ public class fragMembers extends Fragment {
         memberList = new ArrayList<>();
 
 
-
         collectionReference.orderBy("positionIndex").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     for (QueryDocumentSnapshot document : task.getResult()){
                         GroupMembersInfo groupMembersInfo = new GroupMembersInfo(document.getString("name"),
-                                document.getString("position"), document.getLong("positionIndex").intValue());
+                                document.getString("position"), document.getLong("positionIndex").intValue(),
+                                document.getString("profileUrl"));
                         memberList.add(groupMembersInfo);
 
                     }

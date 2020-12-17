@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.crew.R;
 import com.example.crew.customClass.MemberInfo;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,16 +28,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 public class memberInitActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageReference = storage.getReference();
     private static final String TAG = "memberInitActivity";
     private ImageView iv_initProfile;
     private Uri imageUri;
-    private int PICK_FROM_ALBUM = 10;
     private MemberInfo memberInfo;
     private String sex = null;
+    private Uri downloadUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +54,10 @@ public class memberInitActivity extends AppCompatActivity {
         iv_initProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                startActivityForResult(intent, PICK_FROM_ALBUM);
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -118,18 +123,13 @@ public class memberInitActivity extends AppCompatActivity {
             // Access a Cloud Firestore instance from your Activity
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            if(imageUri != null) {
-                FirebaseStorage.getInstance().getReference().child("userProfiles").child(user.getUid()).putFile(imageUri)
-                        .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                Task<Uri> imageUrl = task.getResult().getStorage().getDownloadUrl();
-                                memberInfo = new MemberInfo(name, sex, phoneNumber, birthDay, imageUrl.getResult().toString());
-                            }
-                        });
+            if(null != imageUri) {
+
+                memberInfo = new MemberInfo(name, sex, phoneNumber, birthDay, downloadUrl.toString());
+
+
             }else{
-                memberInfo = new MemberInfo(name, sex, phoneNumber, birthDay, Uri.parse("android.resource://"+getPackageName()+
-                        "/drawable/ic_account_box_black_24dp").toString());
+                memberInfo = new MemberInfo(name, sex, phoneNumber, birthDay, Uri.parse("gs://app-project1-7f629.appspot.com/userProfiles/ic_account_box_black_24dp.xml").toString());
             }
 
 
@@ -170,10 +170,53 @@ public class memberInitActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_FROM_ALBUM && requestCode == RESULT_OK) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
             iv_initProfile.setImageURI(data.getData()); // 가운데 뷰를 바꿈
             imageUri = data.getData(); // 이미지 경로 원본
+            uploadPicture();
         }
+    }
+
+    private void uploadPicture() {
+
+        final StorageReference Ref = storageReference.child("userProfiles/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        UploadTask uploadTask = Ref.putFile(imageUri);
+
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+            }
+        });
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return Ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    downloadUrl = task.getResult();
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
     }
 }
 

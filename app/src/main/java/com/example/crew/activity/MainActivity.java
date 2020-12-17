@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.crew.R;
 import com.example.crew.adapter.SearchGroupsModel;
 import com.example.crew.adapter.MainAdapter;
@@ -111,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }) ;
         }
-
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {

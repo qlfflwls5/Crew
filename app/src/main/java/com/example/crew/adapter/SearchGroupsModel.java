@@ -5,12 +5,14 @@ public class SearchGroupsModel {
 
     private String name;
     private String info;
+    private String profileUrl;
 
-    private SearchGroupsModel() {}
+    public SearchGroupsModel() {}
 
-    private SearchGroupsModel(String name, String info){
+    public SearchGroupsModel(String name, String info, String profileUrl){
         this.name = name;
         this.info = info;
+        this.profileUrl = profileUrl;
     }
 
     public String getName() {
@@ -27,5 +29,13 @@ public class SearchGroupsModel {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 }

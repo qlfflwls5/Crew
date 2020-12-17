@@ -20,6 +20,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/iv_initGroupProfile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_add_to_photos_black_24dp"
+            />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:text="(미선택 시 기본이미지로 설정됩니다)" />
+
         <EditText
             android:id="@+id/ed_groupName"
             android:layout_width="match_parent"

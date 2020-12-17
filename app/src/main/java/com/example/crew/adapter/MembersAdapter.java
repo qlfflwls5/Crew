@@ -4,11 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.crew.R;
 import com.example.crew.customClass.GroupMembersInfo;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -30,6 +33,10 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
     public void onBindViewHolder(@NonNull MembersViewHolder holder, int position) {
         holder.members_name.setText(memberList.get(position).getName());
         holder.members_position.setText(memberList.get(position).getPosition());
+        Glide.with(holder.itemView.getContext())
+                .load(memberList.get(position).getProfileUrl())
+                .apply(new RequestOptions().circleCrop())
+                .into(holder.members_profile);
     }
 
     @NonNull
@@ -65,12 +72,14 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
 
         TextView members_name;
         TextView members_position;
+        ImageView members_profile;
 
         public MembersViewHolder(@NonNull View itemView) {
             super(itemView);
 
             members_name = itemView.findViewById(R.id.tv_memberName);
             members_position = itemView.findViewById(R.id.tv_memberPosition);
+            members_profile = itemView.findViewById(R.id.iv_profile);
 
 
             //리사이클러뷰 클릭을 위한 코드와 연동
