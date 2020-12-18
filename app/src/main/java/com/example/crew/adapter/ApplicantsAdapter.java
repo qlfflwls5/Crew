@@ -1,48 +1,36 @@
 package com.example.crew.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.crew.R;
-import com.example.crew.customClass.GroupInfo;
-import com.example.crew.customClass.GroupMembersInfo;
+import com.example.crew.customClass.GroupApplicantsInfo;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-import java.util.ArrayList;
+public class ApplicantsAdapter extends FirestoreRecyclerAdapter<GroupApplicantsInfo, ApplicantsAdapter.GroupsViewHolder> {
 
-public class MainAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, MainAdapter.GroupsViewHolder> {
-
-    public MainAdapter(@NonNull FirestoreRecyclerOptions<SearchGroupsModel> options) {
+    public ApplicantsAdapter(@NonNull FirestoreRecyclerOptions<GroupApplicantsInfo> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull GroupsViewHolder holder, int position, @NonNull SearchGroupsModel model) {
-
-        holder.group_name.setText(model.getName());
-        holder.group_info.setText(model.getInfo());
-        Glide.with(holder.iv_group_profile.getContext())
-            .load(model.getProfileUrl())
-            .apply(new RequestOptions().circleCrop())
-            .into(holder.iv_group_profile);
+    protected void onBindViewHolder(@NonNull final GroupsViewHolder holder, int position, @NonNull final GroupApplicantsInfo model) {
+        holder.applicants_name.setText(model.getName());
     }
 
     @NonNull
     @Override
     public GroupsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_group_model, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.frag_members_applicants, parent, false);
         return new GroupsViewHolder(v);
     }
+
 
     //이하 리사이클러뷰 클릭을 위한 코드
     public interface OnItemClickListener {
@@ -60,16 +48,12 @@ public class MainAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, Mai
     //검색 그룹 뷰홀더
     class GroupsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView group_name;
-        TextView group_info;
-        ImageView iv_group_profile;
+        private TextView applicants_name;
 
         public GroupsViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            group_name = itemView.findViewById(R.id.group_name);
-            group_info = itemView.findViewById(R.id.group_info);
-            iv_group_profile = itemView.findViewById(R.id.iv_group_profile);
+            applicants_name = itemView.findViewById(R.id.applicants_name);
 
             //리사이클러뷰 클릭을 위한 코드와 연동
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +63,7 @@ public class MainAdapter extends FirestoreRecyclerAdapter<SearchGroupsModel, Mai
                     if (pos != RecyclerView.NO_POSITION) {
                         // 리스너 객체의 메서드 호출.
                         if (mListener != null) {
-                            mListener.onItemClick(v, pos, group_name.getText().toString()) ;
+                            mListener.onItemClick(v, pos, applicants_name.getText().toString()) ;
                         }
                     }
                 }

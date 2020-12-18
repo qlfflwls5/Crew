@@ -5,18 +5,16 @@ import java.util.Comparator;
 public class GroupMembersInfo {
     private String name;
     private String position;
-    private String profileUrl;
     private int positionIndex;
 
 
 
 
 
-    public GroupMembersInfo(String name, String position, int positionIndex, String profileUrl){
+    public GroupMembersInfo(String name, String position, int positionIndex){
         this.name = name;
         this.position = position;
         this.positionIndex = positionIndex;
-        this.profileUrl = profileUrl;
     }
 
     public String getName(){
@@ -31,7 +29,4 @@ public class GroupMembersInfo {
 
     public int getPositionIndex() { return positionIndex;  }
     public void setPositionIndex(int positionIndex) { this.positionIndex = positionIndex;  }
-
-    public String getProfileUrl() { return profileUrl; }
-    public void setProfileUrl(String profileUrl) { this.profileUrl = profileUrl; }
 }

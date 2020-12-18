@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#FDFDFD"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activity.ApplicantsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageButton
-            android:id="@+id/ib_goMain"
+            android:id="@+id/ib_goMembers"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -24,15 +24,29 @@
             tools:ignore="VectorDrawableCompat" />
 
         <TextView
-            android:id="@+id/tv_groupname"
+            android:id="@+id/tv_applicants"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:text="활동 기록"
+            android:layout_marginTop="12dp"
+            android:text="가입신청 목록"
             android:textColor="#00203F"
-            android:textSize="24dp"
-            app:layout_constraintStart_toEndOf="@+id/ib_goMain"
+            android:textSize="18dp"
+            app:layout_constraintStart_toEndOf="@+id/ib_goMembers"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_applicants"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
 
 </LinearLayout>

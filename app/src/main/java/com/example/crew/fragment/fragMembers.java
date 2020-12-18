@@ -1,5 +1,6 @@
 package com.example.crew.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.crew.R;
+import com.example.crew.activity.ApplicantsActivity;
 import com.example.crew.adapter.MembersAdapter;
 import com.example.crew.customClass.GroupMembersInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,8 +26,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class fragMembers extends Fragment {
 
@@ -62,6 +62,15 @@ public class fragMembers extends Fragment {
             }
         });
 
+        view.findViewById(R.id.bt_checkApplicants).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ApplicantsActivity.class);
+                intent.putExtra("group_name", group_name);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -83,8 +92,7 @@ public class fragMembers extends Fragment {
                 if(task.isSuccessful()){
                     for (QueryDocumentSnapshot document : task.getResult()){
                         GroupMembersInfo groupMembersInfo = new GroupMembersInfo(document.getString("name"),
-                                document.getString("position"), document.getLong("positionIndex").intValue(),
-                                document.getString("profileUrl"));
+                                document.getString("position"), document.getLong("positionIndex").intValue());
                         memberList.add(groupMembersInfo);
 
                     }

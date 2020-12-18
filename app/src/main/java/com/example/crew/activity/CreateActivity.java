@@ -126,8 +126,8 @@ public class CreateActivity extends AppCompatActivity {
                                                         DocumentSnapshot document = task.getResult();
                                                         if (document.exists()) {
                                                             String creatorName = (String) document.get("name");
-                                                            String profileUrl = (String) document.get("profileImageUrl");
-                                                            GroupMembersInfo groupMembersInfo = new GroupMembersInfo(creatorName, "마스터", 1, profileUrl);
+                                                            //String profileUrl = (String) document.get("profileImageUrl");
+                                                            GroupMembersInfo groupMembersInfo = new GroupMembersInfo(creatorName, "마스터", 1);
                                                             db.collection("groups")
                                                                     .document(name)
                                                                     .collection("members")
